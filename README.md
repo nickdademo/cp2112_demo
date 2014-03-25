@@ -17,4 +17,10 @@ cp2112_demo
 *Average Time to Empty = 5673 min(s)*  
 *Done! Exiting...*  
 
-*C:\Users\Nick\Desktop\cp2112_demo\Debug>*
+*C:\Users\Nick\Desktop\cp2112_demo\Debug>*  
+
+**Tools/Environment:**  
+- Silicon Labs CP2112EK: http://www.silabs.com/products/interface/Pages/CP2112EK.aspx  
+- Texas Instruments bq20z65-R1 Gas Gauge: http://www.ti.com/product/bq20z65-r1  
+- Windows 7 Professional 64-bit  
+- Visual Studio 2010 (Version 10.0.40219.1 SP1Rel)  
