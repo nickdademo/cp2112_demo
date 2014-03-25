@@ -6,6 +6,7 @@
 #define VID                     0x10C4
 #define PID                     0xEA90
 #define SLAVE_WRITE_ADDRESS     0x16
+#define TARGET_ADDRESS_SIZE     1
 
 enum sbsCommands {
     MANUFACTURER_ACCESS, // 0x00

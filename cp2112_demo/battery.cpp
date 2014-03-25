@@ -117,7 +117,7 @@ int SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
     if(HidSmbus_IsOpened(*device, &opened) == HID_SMBUS_SUCCESS && opened)
     {
         // Issue an address read request
-        status = HidSmbus_AddressReadRequest(*device, slaveAddress, numBytesToRead, 1, &targetAddress);
+        status = HidSmbus_AddressReadRequest(*device, slaveAddress, numBytesToRead, TARGET_ADDRESS_SIZE, &targetAddress);
         // Check status
         if(status != HID_SMBUS_SUCCESS)
         {
