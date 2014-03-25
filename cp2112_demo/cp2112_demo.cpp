@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Voltage = %d mV\r\n", voltage_mV);
     }
 
-	// Read Current [0x0A]
+    // Read Current [0x0A]
     if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, CURRENT, 2) != 0)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Current = %d mA\r\n", current_mA);
     }
 
-	// Relative State of Charge [0x0D]
+    // Relative State of Charge [0x0D]
     if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, RELATIVE_STATE_OF_CHARGE, 1) != 0)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "RSOC = %d %%\r\n", rsoc);
     }
 
-	// Remaining Capacity [0x0F]
+    // Remaining Capacity [0x0F]
     if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, REMAINING_CAPACITY, 2) != 0)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Remaining Capacity = %d mAh\r\n", remCap);
     }
 
-	// Average Time to Empty [0x12]
+    // Average Time to Empty [0x12]
     if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, AVERAGE_TIME_TO_EMPTY, 2) != 0)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
     }
 
     // Success
-	fprintf(stderr, "Done! Exiting...\r\n");
+    fprintf(stderr, "Done! Exiting...\r\n");
     SMBus_Close(&m_hidSmbus);
     return 0;
 }
