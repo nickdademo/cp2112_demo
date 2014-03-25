@@ -10,6 +10,11 @@ cp2112_demo
 *C:\Users\Nick\Desktop\cp2112_demo\Debug>cp2112_demo.exe*  
 *Device successfully opened.*  
 *Device successfully configured.*  
-*Pack Voltage = 11869 mV*  
+*Voltage = 11863 mV*  
+*Current = -18 mA*  
+*RSOC = 77 %*  
+*Remaining Capacity = 1702 mAh*  
+*Average Time to Empty = 5673 min(s)*  
+*Done! Exiting...*  
 
-*C:\Users\Nick\Desktop\cp2112_demo\Debug>*  
+*C:\Users\Nick\Desktop\cp2112_demo\Debug>*
