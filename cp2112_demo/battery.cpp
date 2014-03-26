@@ -1,5 +1,12 @@
 #include "battery.h"
 
+const int sbsCommandResponseLength[] = {
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 2,   // 0x00 - 0x09
+    2, 2, 1, 1, 1, 2, 2, 2, 2, 2,   // 0x0A - 0x13
+    2, 2, 2, 2, 2, 2, 2, 2, 2, 0,   // 0x14 - 0x1D
+    0, 0, 21, 21, 5, 15             // 0x1E - 0x23
+};
+
 int SMBus_Open(HID_SMBUS_DEVICE* device)
 {
     BOOL                    found = FALSE;
@@ -111,7 +118,10 @@ int SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
     BOOL                opened;
     HID_SMBUS_STATUS    status;
     HID_SMBUS_S0        status0;
+    HID_SMBUS_S1        status1;
     BYTE                numBytesRead = 0;
+    WORD                numRetries;
+    WORD                bytesRead;
 
     // Make sure that the device is opened
     if(HidSmbus_IsOpened(*device, &opened) == HID_SMBUS_SUCCESS && opened)
@@ -132,6 +142,14 @@ int SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
             return -1;
         }
 
+        // Wait for transfer status response
+        status = HidSmbus_GetTransferStatusResponse(*device, &status0, &status1, &numRetries, &bytesRead);
+        // Check status
+        if(status != HID_SMBUS_SUCCESS)
+        {
+            return -1;
+        }
+
         // Notify device that it should send a read response back
         status = HidSmbus_ForceReadResponse(*device, numBytesToRead);
         // Check status
@@ -144,6 +162,11 @@ int SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
         status = HidSmbus_GetReadResponse(*device, &status0, buffer, HID_SMBUS_MAX_READ_RESPONSE_SIZE, &numBytesRead);
         // Check status
         if(status != HID_SMBUS_SUCCESS)
+        {
+            return -1;
+        }
+        // Check number of bytes read
+        if(numBytesRead != numBytesToRead)
         {
             return -1;
         }

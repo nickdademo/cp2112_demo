@@ -1,5 +1,4 @@
 #include <windows.h>
-#include <stdio.h>
 #include "SLABCP2112.h"
 #pragma comment(lib, "lib/x86/SLABHIDtoSMBus.lib")
 
@@ -46,6 +45,8 @@ enum sbsCommands {
     DEVICE_CHEMISTRY,
     MANUFACTURER_DATA // 0x23
 };
+
+extern const int sbsCommandResponseLength[];
 
 int SMBus_Open(HID_SMBUS_DEVICE* device);
 int SMBus_Close(HID_SMBUS_DEVICE* device);
