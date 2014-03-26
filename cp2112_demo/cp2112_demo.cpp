@@ -105,6 +105,24 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Average Time to Empty = %d min(s)\r\n", avgTimeToEmpty);
     }
 
+    // Manufacturer Name [0x20]
+    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, MANUFACTURER_NAME, sbsCommandResponseLength[MANUFACTURER_NAME]) != 0)
+    {
+        fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
+        SMBus_Close(&m_hidSmbus);
+        return -1;
+    }
+    else
+    {
+        fprintf(stderr, "Manufacturer Name = ");
+        // NOTE: Length of string is stored in first received byte
+        for(int i=1; i<buffer[0]+1; i++)
+        {
+            fprintf(stderr, "%c", buffer[i]);
+        }
+        fprintf(stderr, "\r\n");
+    }
+
     // Success
     fprintf(stderr, "Done! Exiting...\r\n");
     SMBus_Close(&m_hidSmbus);
