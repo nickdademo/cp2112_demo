@@ -1,5 +1,14 @@
 #include "battery.h"
 
+/*
+NOTE: As command response lengths may differ between gas gauges, ensure
+      sbsCommandResponseLength contains the correct lengths for your
+      particular device (check datasheet).
+
+For example, some typical variations:
+    Manufacturer Name = 20+1 bytes / 11+1 bytes
+    Device Name = 20+1 bytes / 7+1 bytes
+*/
 const int sbsCommandResponseLength[] = {
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,   // 0x00 - 0x09
     2, 2, 1, 1, 1, 2, 2, 2, 2, 2,   // 0x0A - 0x13
