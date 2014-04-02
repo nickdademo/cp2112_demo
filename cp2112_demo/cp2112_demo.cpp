@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "battery.h"
 
-#define BITRATE_HZ          50000
+#define BITRATE_HZ          25000
 #define ACK_ADDRESS         0x02
 #define AUTO_RESPOND        FALSE
 #define WRITE_TIMEOUT_MS    1000
