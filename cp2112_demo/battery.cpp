@@ -6,8 +6,8 @@ NOTE: As command response lengths may differ between gas gauges, ensure
       particular device (check datasheet).
 
 For example, some typical variations:
-    Manufacturer Name = 20+1 bytes / 11+1 bytes
-    Device Name = 20+1 bytes / 7+1 bytes
+    Manufacturer Name [0x20] = 20+1 bytes / 11+1 bytes
+    Device Name [0x21] = 20+1 bytes / 7+1 bytes
 */
 const int sbsCommandResponseLength[] = {
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,   // 0x00 - 0x09
