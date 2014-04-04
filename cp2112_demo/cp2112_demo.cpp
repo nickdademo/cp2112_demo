@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     }
     
     // Read Voltage [0x09]
-    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, VOLTAGE, sbsCommandResponseLength[VOLTAGE]) != 0)
+    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, VOLTAGE, sbsCommandResponseLength[VOLTAGE]) < 1)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
         SMBus_Close(&m_hidSmbus);
@@ -54,7 +54,7 @@ int main(int argc, char* argv[])
     }
 
     // Read Current [0x0A]
-    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, CURRENT, sbsCommandResponseLength[CURRENT]) != 0)
+    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, CURRENT, sbsCommandResponseLength[CURRENT]) < 1)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
         SMBus_Close(&m_hidSmbus);
@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
     }
 
     // Relative State of Charge [0x0D]
-    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, RELATIVE_STATE_OF_CHARGE, sbsCommandResponseLength[RELATIVE_STATE_OF_CHARGE]) != 0)
+    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, RELATIVE_STATE_OF_CHARGE, sbsCommandResponseLength[RELATIVE_STATE_OF_CHARGE]) < 1)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
         SMBus_Close(&m_hidSmbus);
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
     }
 
     // Remaining Capacity [0x0F]
-    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, REMAINING_CAPACITY, sbsCommandResponseLength[REMAINING_CAPACITY]) != 0)
+    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, REMAINING_CAPACITY, sbsCommandResponseLength[REMAINING_CAPACITY]) < 1)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
         SMBus_Close(&m_hidSmbus);
@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
     }
 
     // Average Time to Empty [0x12]
-    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, AVERAGE_TIME_TO_EMPTY, sbsCommandResponseLength[AVERAGE_TIME_TO_EMPTY]) != 0)
+    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, AVERAGE_TIME_TO_EMPTY, sbsCommandResponseLength[AVERAGE_TIME_TO_EMPTY]) < 1)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
         SMBus_Close(&m_hidSmbus);
@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
     }
 
     // Manufacturer Name [0x20]
-    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, MANUFACTURER_NAME, sbsCommandResponseLength[MANUFACTURER_NAME]) != 0)
+    if(SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, MANUFACTURER_NAME, sbsCommandResponseLength[MANUFACTURER_NAME]) < 1)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
         SMBus_Close(&m_hidSmbus);

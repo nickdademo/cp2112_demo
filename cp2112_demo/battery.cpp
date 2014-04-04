@@ -174,11 +174,6 @@ int SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
         {
             return -1;
         }
-        // Check number of bytes read
-        if(numBytesRead != numBytesToRead)
-        {
-            return -1;
-        }
     }
     else
     {
@@ -186,5 +181,5 @@ int SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
     }
 
     // Success
-    return 0;
+    return numBytesRead;
 }
