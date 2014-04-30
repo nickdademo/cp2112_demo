@@ -64,7 +64,7 @@ int SMBus_Close(HID_SMBUS_DEVICE* device)
     HID_SMBUS_STATUS status;
 
     // Attempt close
-    status = HidSmbus_Close(device);
+    status = HidSmbus_Close(*device);
     // Check status
     if(status != HID_SMBUS_SUCCESS)
     {
