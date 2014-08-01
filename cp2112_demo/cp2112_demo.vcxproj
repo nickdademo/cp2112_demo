@@ -154,12 +154,13 @@ copy "$(ProjectDir)lib\x64\SLABHIDtoSMBus.dll" "$(OutDir)SLABHIDtoSMBus.dll"</Co
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="battery.cpp" />
-    <ClCompile Include="cp2112_demo.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="battery.h" />
     <ClInclude Include="SLABCP2112.h" />
+    <ClInclude Include="types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="battery.c" />
+    <ClCompile Include="cp2112_demo.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

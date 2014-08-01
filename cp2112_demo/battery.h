@@ -1,6 +1,5 @@
-#include <windows.h>
+#include "types.h"
 #include "SLABCP2112.h"
-#pragma comment(lib, "lib/x86/SLABHIDtoSMBus.lib")
 
 #define VID                     0x10C4
 #define PID                     0xEA90
