@@ -18,8 +18,8 @@ const WORD sbsCommandResponseLength[] = {
 
 INT SMBus_Open(HID_SMBUS_DEVICE* device)
 {
-    DWORD                   deviceNum;
-	DWORD					numDevices = 0;
+	INT						deviceNum = -1;
+	DWORD					numDevices;
     HID_SMBUS_DEVICE_STR    deviceString;
     HID_SMBUS_STATUS        status;
 
@@ -37,7 +37,7 @@ INT SMBus_Open(HID_SMBUS_DEVICE* device)
     }
 
     // Device not found
-    if(numDevices == 0)
+    if(deviceNum == -1)
     {
         return -1;
     }
