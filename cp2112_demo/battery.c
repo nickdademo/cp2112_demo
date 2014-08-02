@@ -9,18 +9,17 @@ For example, some typical variations:
     Manufacturer Name [0x20] = 20+1 bytes / 11+1 bytes
     Device Name [0x21] = 20+1 bytes / 7+1 bytes
 */
-const int sbsCommandResponseLength[] = {
+const WORD sbsCommandResponseLength[] = {
     2, 2, 2, 2, 2, 2, 2, 2, 2, 2,   // 0x00 - 0x09
     2, 2, 1, 1, 1, 2, 2, 2, 2, 2,   // 0x0A - 0x13
     2, 2, 2, 2, 2, 2, 2, 2, 2, 0,   // 0x14 - 0x1D
     0, 0, 21, 21, 5, 15             // 0x1E - 0x23
 };
 
-int SMBus_Open(HID_SMBUS_DEVICE* device)
+INT SMBus_Open(HID_SMBUS_DEVICE* device)
 {
-    BOOL                    found = FALSE;
     DWORD                   deviceNum;
-    DWORD                   numDevices;
+	DWORD					numDevices = 0;
     HID_SMBUS_DEVICE_STR    deviceString;
     HID_SMBUS_STATUS        status;
 
@@ -32,14 +31,13 @@ int SMBus_Open(HID_SMBUS_DEVICE* device)
             if(HidSmbus_GetString(i, VID, PID, deviceString, HID_SMBUS_GET_SERIAL_STR) == HID_SMBUS_SUCCESS)
             {
                 deviceNum = i;
-                found = TRUE;
                 break;
             }
         }
     }
 
     // Device not found
-    if(!found)
+    if(numDevices == 0)
     {
         return -1;
     }
@@ -59,7 +57,7 @@ int SMBus_Open(HID_SMBUS_DEVICE* device)
     return 0;
 }
 
-int SMBus_Close(HID_SMBUS_DEVICE* device)
+INT SMBus_Close(HID_SMBUS_DEVICE* device)
 {
     HID_SMBUS_STATUS status;
 
@@ -74,7 +72,7 @@ int SMBus_Close(HID_SMBUS_DEVICE* device)
     return 0;
 }
 
-int SMBus_Reset(HID_SMBUS_DEVICE* device)
+INT SMBus_Reset(HID_SMBUS_DEVICE* device)
 {
     BOOL                opened;
     HID_SMBUS_STATUS    status;
@@ -94,7 +92,7 @@ int SMBus_Reset(HID_SMBUS_DEVICE* device)
     return 0;
 }
 
-int SMBus_Configure(HID_SMBUS_DEVICE* device, DWORD bitRate, BYTE address, BOOL autoReadRespond, WORD writeTimeout, WORD readTimeout, BOOL sclLowTimeout, WORD transferRetries, DWORD responseTimeout)
+INT SMBus_Configure(HID_SMBUS_DEVICE* device, DWORD bitRate, BYTE address, BOOL autoReadRespond, WORD writeTimeout, WORD readTimeout, BOOL sclLowTimeout, WORD transferRetries, DWORD responseTimeout)
 {
     BOOL                opened;
     HID_SMBUS_STATUS    status;
@@ -122,7 +120,7 @@ int SMBus_Configure(HID_SMBUS_DEVICE* device, DWORD bitRate, BYTE address, BOOL 
     return 0;
 }
 
-int SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE targetAddress, WORD numBytesToRead)
+INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE targetAddress, WORD numBytesToRead)
 {
     BOOL                opened;
     HID_SMBUS_STATUS    status;

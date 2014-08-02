@@ -45,10 +45,10 @@ enum sbsCommands {
     MANUFACTURER_DATA // 0x23
 };
 
-extern const int sbsCommandResponseLength[];
+extern const WORD sbsCommandResponseLength[];
 
-int SMBus_Open(HID_SMBUS_DEVICE* device);
-int SMBus_Close(HID_SMBUS_DEVICE* device);
-int SMBus_Reset(HID_SMBUS_DEVICE* device);
-int SMBus_Configure(HID_SMBUS_DEVICE* device, DWORD bitRate, BYTE address, BOOL autoReadRespond, WORD writeTimeout, WORD readTimeout, BOOL sclLowTimeout, WORD transferRetries, DWORD responseTimeout);
-int SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE targetAddress, WORD numBytesToRead);
+INT SMBus_Open(HID_SMBUS_DEVICE* device);
+INT SMBus_Close(HID_SMBUS_DEVICE* device);
+INT SMBus_Reset(HID_SMBUS_DEVICE* device);
+INT SMBus_Configure(HID_SMBUS_DEVICE* device, DWORD bitRate, BYTE address, BOOL autoReadRespond, WORD writeTimeout, WORD readTimeout, BOOL sclLowTimeout, WORD transferRetries, DWORD responseTimeout);
+INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE targetAddress, WORD numBytesToRead);
