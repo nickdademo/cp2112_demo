@@ -4,7 +4,6 @@ cp2112_demo
 * Setting J7=VIO pulls up the bus to 3.3V - this should be compatible with the majority of applications.
 * If you require a different bus voltage:
  * Set J7=EXT_PU and connect TB1(EXT_PU) to the battery interface voltage.
- * If 5V is not externally available for a 5V SMBus interface, connect TB1(EXT_PU) to J5(1) VBUS.
 
 **Program Output:**  
 
