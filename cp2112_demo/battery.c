@@ -127,6 +127,7 @@ INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
     HID_SMBUS_S0        status0;
     HID_SMBUS_S1        status1;
     BYTE                numBytesRead = 0;
+	BYTE                numBytesRead = 0;
     WORD                numRetries;
     WORD                bytesRead;
 
@@ -166,17 +167,14 @@ INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
         }
 
         // Wait for a read response
-        BYTE i = 0;
-        BYTE _numBytesRead = 0;
         do {
-            status = HidSmbus_GetReadResponse(*device, &status0, &buffer[i], HID_SMBUS_MAX_READ_RESPONSE_SIZE, &_numBytesRead);
+            status = HidSmbus_GetReadResponse(*device, &status0, &buffer[numBytesRead], HID_SMBUS_MAX_READ_RESPONSE_SIZE, &_numBytesRead);
             // Check status
             if (status != HID_SMBUS_SUCCESS)
             {
                 return -1;
             }
             numBytesRead += _numBytesRead;
-            i += _numBytesRead;
         } while (status0 != HID_SMBUS_S0_COMPLETE);
     }
     else
