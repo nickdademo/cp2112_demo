@@ -4,12 +4,12 @@
 
 #define BITRATE_HZ				25000
 #define ACK_ADDRESS				0x02
-#define AUTO_RESPOND			FALSE
-#define WRITE_TIMEOUT_MS		1000
-#define READ_TIMEOUT_MS			1000
-#define TRANSFER_RETRIES		3
-#define SCL_LOW_TIMEOUT			FALSE
-#define RESPONSE_TIMEOUT_MS		1000
+#define AUTO_RESPOND			TRUE
+#define WRITE_TIMEOUT_MS		100
+#define READ_TIMEOUT_MS			100
+#define TRANSFER_RETRIES		0
+#define SCL_LOW_TIMEOUT			TRUE
+#define RESPONSE_TIMEOUT_MS		100
 
 #define CHARGER_SLAVE_ADDRESS	0x12
 
@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
         fprintf(stderr,"Device successfully configured.\r\n");
     }
     
-    // Read Voltage [0x09]
+    // Voltage [0x09]
     if (SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, VOLTAGE, sbsCommandResponseLength[VOLTAGE]) != sbsCommandResponseLength[VOLTAGE])
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
         fprintf(stderr, "Voltage = %d mV\r\n", voltage_mV);
     }
 
-    // Read Current [0x0A]
+    // Current [0x0A]
     if (SMBus_Read(&m_hidSmbus, buffer, SLAVE_WRITE_ADDRESS, CURRENT, sbsCommandResponseLength[CURRENT]) != sbsCommandResponseLength[CURRENT])
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");

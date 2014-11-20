@@ -134,8 +134,32 @@ INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
     // Make sure that the device is opened
     if(HidSmbus_IsOpened(*device, &opened) == HID_SMBUS_SUCCESS && opened)
     {
-        // Issue an address read request
-        status = HidSmbus_AddressReadRequest(*device, slaveAddress, numBytesToRead, TARGET_ADDRESS_SIZE, &targetAddress);
+		// Issue a write request
+		status = HidSmbus_WriteRequest(*device, slaveAddress, &targetAddress, 1);
+		// Check status
+		if (status != HID_SMBUS_SUCCESS)
+		{
+			return -1;
+		}
+
+		// Issue transfer status request
+		status = HidSmbus_TransferStatusRequest(*device);
+		// Check status
+		if (status != HID_SMBUS_SUCCESS)
+		{
+			return -1;
+		}
+
+		// Wait for transfer status response
+		status = HidSmbus_GetTransferStatusResponse(*device, &status0, &status1, &numRetries, &bytesRead);
+		// Check status
+		if (status != HID_SMBUS_SUCCESS)
+		{
+			return -1;
+		}
+
+        // Issue a read request
+        status = HidSmbus_ReadRequest(*device, slaveAddress, numBytesToRead);
         // Check status
         if(status != HID_SMBUS_SUCCESS)
         {
@@ -150,33 +174,25 @@ INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
             return -1;
         }
 
-        // Wait for transfer status response
-        status = HidSmbus_GetTransferStatusResponse(*device, &status0, &status1, &numRetries, &bytesRead);
-        // Check status
-        if(status != HID_SMBUS_SUCCESS)
-        {
-            return -1;
-        }
-
-        // Notify device that it should send a read response back
-        status = HidSmbus_ForceReadResponse(*device, numBytesToRead);
-        // Check status
-        if(status != HID_SMBUS_SUCCESS)
-        {
-            return -1;
-        }
-
-        // Wait for a read response
-        do
+		// Wait for transfer status response
+		status = HidSmbus_GetTransferStatusResponse(*device, &status0, &status1, &numRetries, &bytesRead);
+		// Check status
+		if (status != HID_SMBUS_SUCCESS)
 		{
-            status = HidSmbus_GetReadResponse(*device, &status0, &buffer[numBytesRead], HID_SMBUS_MAX_READ_RESPONSE_SIZE, &_numBytesRead);
-            // Check status
-            if (status != HID_SMBUS_SUCCESS)
-            {
-                return -1;
-            }
-            numBytesRead += _numBytesRead;
-        } while (status0 != HID_SMBUS_S0_COMPLETE);
+			return -1;
+		}
+
+		// Wait for a read response
+		do
+		{
+			status = HidSmbus_GetReadResponse(*device, &status0, &buffer[numBytesRead], HID_SMBUS_MAX_READ_RESPONSE_SIZE, &_numBytesRead);
+			// Check status
+			if (status != HID_SMBUS_SUCCESS)
+			{
+				return -1;
+			}
+			numBytesRead += _numBytesRead;
+		} while (status0 != HID_SMBUS_S0_COMPLETE);
     }
     else
     {
