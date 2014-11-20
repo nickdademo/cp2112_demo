@@ -8,7 +8,7 @@
 #define WRITE_TIMEOUT_MS        1000
 #define READ_TIMEOUT_MS         1000
 #define TRANSFER_RETRIES        0
-#define SCL_LOW_TIMEOUT         FALSE
+#define SCL_LOW_TIMEOUT         TRUE
 #define RESPONSE_TIMEOUT_MS     1000
 
 #define CHARGER_SLAVE_ADDRESS   0x12
