@@ -2,14 +2,16 @@
 #include <stdlib.h>
 #include "battery.h"
 
-#define BITRATE_HZ          25000
-#define ACK_ADDRESS         0x02
-#define AUTO_RESPOND        FALSE
-#define WRITE_TIMEOUT_MS    1000
-#define READ_TIMEOUT_MS     1000
-#define TRANSFER_RETRIES    3
-#define SCL_LOW_TIMEOUT     FALSE
-#define RESPONSE_TIMEOUT_MS 1000
+#define BITRATE_HZ				25000
+#define ACK_ADDRESS				0x02
+#define AUTO_RESPOND			FALSE
+#define WRITE_TIMEOUT_MS		1000
+#define READ_TIMEOUT_MS			1000
+#define TRANSFER_RETRIES		3
+#define SCL_LOW_TIMEOUT			FALSE
+#define RESPONSE_TIMEOUT_MS		1000
+
+#define CHARGER_SLAVE_ADDRESS	0x12
 
 int main(int argc, char* argv[])
 {
@@ -116,12 +118,33 @@ int main(int argc, char* argv[])
     {
         fprintf(stderr, "Manufacturer Name = ");
         // NOTE: Length of string is stored in first received byte
-        for(int i=1; i<buffer[0]+1; i++)
+        for(int i = 1; i < buffer[0] + 1; i++)
         {
             fprintf(stderr, "%c", buffer[i]);
         }
         fprintf(stderr, "\r\n");
     }
+
+	// Check if charger is present
+	// Charger Status [0x13]
+	if (SMBus_Read(&m_hidSmbus, buffer, CHARGER_SLAVE_ADDRESS, 0x13, 2) != 2)
+	{
+		fprintf(stderr, "ERROR: Could not perform SMBus read.\r\n");
+		SMBus_Close(&m_hidSmbus);
+		return -1;
+	}
+	else
+	{
+		UINT16 chargerStatus = (buffer[1] << 8) | buffer[0];
+		if (chargerStatus & 0x8000)
+		{
+			fprintf(stderr, "Charger connected.\r\n");
+		}
+		else
+		{
+			fprintf(stderr, "Charger NOT connected.\r\n");
+		}
+	}
 
     // Success
     fprintf(stderr, "Done! Exiting...\r\n");
