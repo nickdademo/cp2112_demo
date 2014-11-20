@@ -1,7 +1,5 @@
 #include "battery.h"
 
-#include <stdio.h>
-
 /*
 NOTE: As command response lengths may differ between gas gauges, ensure
       sbsCommandResponseLength contains the correct lengths for your
