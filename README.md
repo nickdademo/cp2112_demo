@@ -7,18 +7,16 @@ cp2112_demo
 
 **Program Output:**  
 
-*C:\Users\Nick\Desktop\cp2112_demo\x64\Debug>cp2112_demo.exe*  
 *Device successfully opened.*  
 *Device successfully configured.*  
-*Voltage = 11863 mV*  
-*Current = -18 mA*  
-*RSOC = 77 %*  
-*Remaining Capacity = 1702 mAh*  
-*Average Time to Empty = 5673 min(s)*  
-*Manufacturer Name = Zippy*  
+*Voltage = 16403 mV*  
+*Current = 74 mA*  
+*RSOC = 97 %*  
+*Remaining Capacity = 5709 mAh*  
+*Average Time to Empty = 738 min(s)*  
+*Manufacturer Name = INSPIREDE*  
+*Charger connected.*  
 *Done! Exiting...*  
-
-*C:\Users\Nick\Desktop\cp2112_demo\Debug>*  
 
 **Tools/Environment:**  
 - Silicon Labs CP2112EK: http://www.silabs.com/products/interface/Pages/CP2112EK.aspx  
