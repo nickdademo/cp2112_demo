@@ -185,3 +185,56 @@ INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
     // Success
     return totalNumBytesRead;
 }
+
+INT SMBus_Write(HID_SMBUS_DEVICE* device, BYTE *buffer, BYTE slaveAddress, BYTE targetAddress, WORD numBytesToWrite)
+{
+    BOOL                opened;
+    HID_SMBUS_STATUS    status;
+    HID_SMBUS_S0        status0;
+    HID_SMBUS_S1        status1;
+    WORD                numRetries;
+    WORD                bytesRead;
+    BYTE                _buffer[HID_SMBUS_MAX_WRITE_REQUEST_SIZE];
+
+    // Create buffer with target address
+    _buffer[0] = targetAddress;
+    for (int i = 0; (i < numBytesToWrite) && (i < (HID_SMBUS_MAX_WRITE_REQUEST_SIZE - 1)); i++)
+    {
+        _buffer[i + 1] = buffer[i];
+    }
+
+    // Make sure that the device is opened
+    if (HidSmbus_IsOpened(*device, &opened) == HID_SMBUS_SUCCESS && opened)
+    {
+        // Issue write request
+        status = HidSmbus_WriteRequest(*device, slaveAddress, _buffer, numBytesToWrite + 1);
+        // Check status
+        if (status != HID_SMBUS_SUCCESS)
+        {
+            return -1;
+        }
+
+        // Issue transfer status request
+        status = HidSmbus_TransferStatusRequest(*device);
+        // Check status
+        if (status != HID_SMBUS_SUCCESS)
+        {
+            return -1;
+        }
+
+        // Wait for transfer status response
+        status = HidSmbus_GetTransferStatusResponse(*device, &status0, &status1, &numRetries, &bytesRead);
+        // Check status
+        if (status != HID_SMBUS_SUCCESS)
+        {
+            return -1;
+        }
+    }
+    else
+    {
+        return -1;
+    }
+
+    // Success
+    return 0;
+}
