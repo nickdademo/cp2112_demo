@@ -70,6 +70,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <CustomBuildAfterTargets>Link</CustomBuildAfterTargets>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -77,9 +78,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <CustomBuildAfterTargets>Link</CustomBuildAfterTargets>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <CustomBuildAfterTargets>Link</CustomBuildAfterTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -99,6 +104,10 @@
 copy "$(ProjectDir)lib\x86\SLABHIDtoSMBus.dll" "$(OutDir)SLABHIDtoSMBus.dll"</Command>
       <Outputs>SLABHIDDevice.dll;SLABHIDtoSMBus.dll;%(Outputs)</Outputs>
     </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -136,6 +145,11 @@ copy "$(ProjectDir)lib\x64\SLABHIDtoSMBus.dll" "$(OutDir)SLABHIDtoSMBus.dll"</Co
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>lib\x86\SLABHIDtoSMBus.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>copy "$(ProjectDir)lib\x86\SLABHIDDevice.dll" "$(OutDir)SLABHIDDevice.dll"
+copy "$(ProjectDir)lib\x86\SLABHIDtoSMBus.dll" "$(OutDir)SLABHIDtoSMBus.dll"</Command>
+      <Outputs>SLABHIDDevice.dll;SLABHIDtoSMBus.dll;%(Outputs)</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -152,7 +166,13 @@ copy "$(ProjectDir)lib\x64\SLABHIDtoSMBus.dll" "$(OutDir)SLABHIDtoSMBus.dll"</Co
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>lib\x64\SLABHIDtoSMBus.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>copy "$(ProjectDir)lib\x64\SLABHIDDevice.dll" "$(OutDir)SLABHIDDevice.dll"
+copy "$(ProjectDir)lib\x64\SLABHIDtoSMBus.dll" "$(OutDir)SLABHIDtoSMBus.dll"</Command>
+      <Outputs>SLABHIDDevice.dll;SLABHIDtoSMBus.dll;%(Outputs)</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="battery.h" />

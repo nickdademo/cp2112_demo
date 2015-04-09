@@ -1,0 +1,8 @@
+/*.sdf
+/*.opensdf
+/x64
+/Win32
+Release
+Debug
+/cp2112_demo/Win32
+/cp2112_demo/x64
