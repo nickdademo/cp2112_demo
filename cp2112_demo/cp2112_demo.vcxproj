@@ -175,12 +175,12 @@ copy "$(ProjectDir)lib\x64\SLABHIDtoSMBus.dll" "$(OutDir)SLABHIDtoSMBus.dll"</Co
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="battery.h" />
+    <ClInclude Include="smbus.h" />
     <ClInclude Include="SLABCP2112.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="battery.c" />
+    <ClCompile Include="smbus.c" />
     <ClCompile Include="cp2112_demo.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -18,18 +18,18 @@
     <ClInclude Include="SLABCP2112.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="battery.h">
+    <ClInclude Include="types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="types.h">
+    <ClInclude Include="smbus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="battery.c">
+    <ClCompile Include="cp2112_demo.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cp2112_demo.c">
+    <ClCompile Include="smbus.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

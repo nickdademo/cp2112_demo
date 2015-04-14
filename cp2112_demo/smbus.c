@@ -1,20 +1,7 @@
-#include "battery.h"
+#include "smbus.h"
 
-/*
-NOTE: As command response lengths may differ between gas gauges, ensure
-      sbsCommandResponseLength contains the correct lengths for your
-      particular device (check datasheet).
-
-For example, some typical variations:
-    Manufacturer Name [0x20] = 20+1 bytes / 11+1 bytes
-    Device Name [0x21] = 20+1 bytes / 7+1 bytes
-*/
-const WORD sbsCommandResponseLength[] = {
-    2, 2, 2, 2, 2, 2, 2, 2, 2, 2,   // 0x00 - 0x09
-    2, 2, 1, 1, 1, 2, 2, 2, 2, 2,   // 0x0A - 0x13
-    2, 2, 2, 2, 2, 2, 2, 2, 2, 0,   // 0x14 - 0x1D
-    0, 0, 21, 21, 5, 15             // 0x1E - 0x23
-};
+#define VID 0x10C4
+#define PID 0xEA90
 
 INT SMBus_Open(HID_SMBUS_DEVICE* device)
 {
@@ -120,7 +107,7 @@ INT SMBus_Configure(HID_SMBUS_DEVICE* device, DWORD bitRate, BYTE address, BOOL 
     return 0;
 }
 
-INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE targetAddress, WORD numBytesToRead)
+INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, WORD numBytesToRead, WORD targetAddressSize, BYTE *targetAddress)
 {
     BOOL                opened;
     HID_SMBUS_STATUS    status;
@@ -135,7 +122,7 @@ INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, BYTE t
     if(HidSmbus_IsOpened(*device, &opened) == HID_SMBUS_SUCCESS && opened)
     {
         // Issue a read request
-        status = HidSmbus_AddressReadRequest(*device, slaveAddress, numBytesToRead, TARGET_ADDRESS_SIZE, &targetAddress);
+        status = HidSmbus_AddressReadRequest(*device, slaveAddress, numBytesToRead, targetAddressSize, targetAddress);
         // Check status
         if(status != HID_SMBUS_SUCCESS)
         {
