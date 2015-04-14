@@ -3,7 +3,7 @@
 #define VID 0x10C4
 #define PID 0xEA90
 
-INT SMBus_Open(HID_SMBUS_DEVICE* device)
+INT SMBus_Open(HID_SMBUS_DEVICE *device)
 {
     INT                     deviceNum = -1;
     DWORD                   numDevices;
@@ -44,7 +44,7 @@ INT SMBus_Open(HID_SMBUS_DEVICE* device)
     return 0;
 }
 
-INT SMBus_Close(HID_SMBUS_DEVICE* device)
+INT SMBus_Close(HID_SMBUS_DEVICE *device)
 {
     HID_SMBUS_STATUS status;
 
@@ -59,7 +59,7 @@ INT SMBus_Close(HID_SMBUS_DEVICE* device)
     return 0;
 }
 
-INT SMBus_Reset(HID_SMBUS_DEVICE* device)
+INT SMBus_Reset(HID_SMBUS_DEVICE *device)
 {
     BOOL                opened;
     HID_SMBUS_STATUS    status;
@@ -79,7 +79,7 @@ INT SMBus_Reset(HID_SMBUS_DEVICE* device)
     return 0;
 }
 
-INT SMBus_Configure(HID_SMBUS_DEVICE* device, DWORD bitRate, BYTE address, BOOL autoReadRespond, WORD writeTimeout, WORD readTimeout, BOOL sclLowTimeout, WORD transferRetries, DWORD responseTimeout)
+INT SMBus_Configure(HID_SMBUS_DEVICE *device, DWORD bitRate, BYTE address, BOOL autoReadRespond, WORD writeTimeout, WORD readTimeout, BOOL sclLowTimeout, WORD transferRetries, DWORD responseTimeout)
 {
     BOOL                opened;
     HID_SMBUS_STATUS    status;
@@ -107,7 +107,7 @@ INT SMBus_Configure(HID_SMBUS_DEVICE* device, DWORD bitRate, BYTE address, BOOL 
     return 0;
 }
 
-INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, WORD numBytesToRead, WORD targetAddressSize, BYTE *targetAddress)
+INT SMBus_Read(HID_SMBUS_DEVICE *device, BYTE *buffer, BYTE slaveAddress, WORD numBytesToRead, WORD targetAddressSize, BYTE *targetAddress)
 {
     BOOL                opened;
     HID_SMBUS_STATUS    status;
@@ -173,7 +173,7 @@ INT SMBus_Read(HID_SMBUS_DEVICE* device, BYTE* buffer, BYTE slaveAddress, WORD n
     return totalNumBytesRead;
 }
 
-INT SMBus_Write(HID_SMBUS_DEVICE* device, BYTE *buffer, BYTE slaveAddress, BYTE targetAddress, WORD numBytesToWrite)
+INT SMBus_Write(HID_SMBUS_DEVICE *device, BYTE *buffer, BYTE slaveAddress, WORD numBytesToWrite)
 {
     BOOL                opened;
     HID_SMBUS_STATUS    status;
@@ -181,41 +181,37 @@ INT SMBus_Write(HID_SMBUS_DEVICE* device, BYTE *buffer, BYTE slaveAddress, BYTE 
     HID_SMBUS_S1        status1;
     WORD                numRetries;
     WORD                bytesRead;
-    BYTE                _buffer[HID_SMBUS_MAX_WRITE_REQUEST_SIZE];
-
-    // Create buffer with target address
-    _buffer[0] = targetAddress;
-    for (int i = 0; (i < numBytesToWrite) && (i < (HID_SMBUS_MAX_WRITE_REQUEST_SIZE - 1)); i++)
-    {
-        _buffer[i + 1] = buffer[i];
-    }
 
     // Make sure that the device is opened
     if (HidSmbus_IsOpened(*device, &opened) == HID_SMBUS_SUCCESS && opened)
     {
         // Issue write request
-        status = HidSmbus_WriteRequest(*device, slaveAddress, _buffer, numBytesToWrite + 1);
+        status = HidSmbus_WriteRequest(*device, slaveAddress, buffer, numBytesToWrite);
         // Check status
         if (status != HID_SMBUS_SUCCESS)
         {
             return -1;
         }
 
-        // Issue transfer status request
-        status = HidSmbus_TransferStatusRequest(*device);
-        // Check status
-        if (status != HID_SMBUS_SUCCESS)
+        // Wait for transfer to complete
+        do
         {
-            return -1;
-        }
+            // Issue transfer status request
+            status = HidSmbus_TransferStatusRequest(*device);
+            // Check status
+            if (status != HID_SMBUS_SUCCESS)
+            {
+                return -1;
+            }
 
-        // Wait for transfer status response
-        status = HidSmbus_GetTransferStatusResponse(*device, &status0, &status1, &numRetries, &bytesRead);
-        // Check status
-        if (status != HID_SMBUS_SUCCESS)
-        {
-            return -1;
-        }
+            // Wait for transfer status response
+            status = HidSmbus_GetTransferStatusResponse(*device, &status0, &status1, &numRetries, &bytesRead);
+            // Check status
+            if (status != HID_SMBUS_SUCCESS)
+            {
+                return -1;
+            }
+        } while (status0 != HID_SMBUS_S0_COMPLETE);
     }
     else
     {
