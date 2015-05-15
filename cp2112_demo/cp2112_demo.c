@@ -83,10 +83,7 @@ int main(int argc, char* argv[])
         SMBus_Close(&m_hidSmbus);
         return -1;
     }
-    else
-    {
-        fprintf(stderr,"Device successfully opened.\r\n");
-    }
+    fprintf(stderr,"Device successfully opened.\r\n");
 
     // Configure device
     if(SMBus_Configure(&m_hidSmbus, BITRATE_HZ, ACK_ADDRESS, AUTO_RESPOND, WRITE_TIMEOUT_MS, READ_TIMEOUT_MS, SCL_LOW_TIMEOUT, TRANSFER_RETRIES, RESPONSE_TIMEOUT_MS) != 0)
@@ -95,10 +92,7 @@ int main(int argc, char* argv[])
         SMBus_Close(&m_hidSmbus);
         return -1;
     }
-    else
-    {
-        fprintf(stderr,"Device successfully configured.\r\n");
-    }
+    fprintf(stderr,"Device successfully configured.\r\n");
     
     // Voltage [0x09]
     targetAddress[0] = VOLTAGE;
@@ -108,11 +102,8 @@ int main(int argc, char* argv[])
         SMBus_Close(&m_hidSmbus);
         return -1;
     }
-    else
-    {
-        UINT16 voltage_mV = (buffer[1] << 8) | buffer[0];
-        fprintf(stderr, "Voltage = %d mV\r\n", voltage_mV);
-    }
+    UINT16 voltage_mV = (buffer[1] << 8) | buffer[0];
+    fprintf(stderr, "Voltage = %d mV\r\n", voltage_mV);
 
     // Current [0x0A]
     targetAddress[0] = CURRENT;
@@ -122,11 +113,8 @@ int main(int argc, char* argv[])
         SMBus_Close(&m_hidSmbus);
         return -1;
     }
-    else
-    {
-        INT16 current_mA = (buffer[1] << 8) | buffer[0];
-        fprintf(stderr, "Current = %d mA\r\n", current_mA);
-    }
+    INT16 current_mA = (buffer[1] << 8) | buffer[0];
+    fprintf(stderr, "Current = %d mA\r\n", current_mA);
 
     // Relative State of Charge [0x0D]
     targetAddress[0] = RELATIVE_STATE_OF_CHARGE;
@@ -136,11 +124,8 @@ int main(int argc, char* argv[])
         SMBus_Close(&m_hidSmbus);
         return -1;
     }
-    else
-    {
-        BYTE rsoc = buffer[0];
-        fprintf(stderr, "RSOC = %d %%\r\n", rsoc);
-    }
+    BYTE rsoc = buffer[0];
+    fprintf(stderr, "RSOC = %d %%\r\n", rsoc);
 
     // Remaining Capacity [0x0F]
     targetAddress[0] = REMAINING_CAPACITY;
@@ -150,11 +135,8 @@ int main(int argc, char* argv[])
         SMBus_Close(&m_hidSmbus);
         return -1;
     }
-    else
-    {
-        UINT16 remCap = (buffer[1] << 8) | buffer[0];
-        fprintf(stderr, "Remaining Capacity = %d mAh\r\n", remCap);
-    }
+    UINT16 remCap = (buffer[1] << 8) | buffer[0];
+    fprintf(stderr, "Remaining Capacity = %d mAh\r\n", remCap);
 
     // Average Time to Empty [0x12]
     targetAddress[0] = AVERAGE_TIME_TO_EMPTY;
@@ -164,11 +146,8 @@ int main(int argc, char* argv[])
         SMBus_Close(&m_hidSmbus);
         return -1;
     }
-    else
-    {
-        UINT16 avgTimeToEmpty = (buffer[1] << 8) | buffer[0];
-        fprintf(stderr, "Average Time to Empty = %d min(s)\r\n", avgTimeToEmpty);
-    }
+    UINT16 avgTimeToEmpty = (buffer[1] << 8) | buffer[0];
+    fprintf(stderr, "Average Time to Empty = %d min(s)\r\n", avgTimeToEmpty);
 
     // Manufacturer Name [0x20]
     targetAddress[0] = MANUFACTURER_NAME;
@@ -178,16 +157,13 @@ int main(int argc, char* argv[])
         SMBus_Close(&m_hidSmbus);
         return -1;
     }
-    else
+    fprintf(stderr, "Manufacturer Name = ");
+    // NOTE: Length of string is stored in first received byte
+    for(int i = 1; i < buffer[0] + 1; i++)
     {
-        fprintf(stderr, "Manufacturer Name = ");
-        // NOTE: Length of string is stored in first received byte
-        for(int i = 1; i < buffer[0] + 1; i++)
-        {
-            fprintf(stderr, "%c", buffer[i]);
-        }
-        fprintf(stderr, "\r\n");
+        fprintf(stderr, "%c", buffer[i]);
     }
+    fprintf(stderr, "\r\n");
 
     // Check if charger is present
     // Charger Status [0x13]
@@ -198,17 +174,14 @@ int main(int argc, char* argv[])
         SMBus_Close(&m_hidSmbus);
         return -1;
     }
+    UINT16 chargerStatus = (buffer[1] << 8) | buffer[0];
+    if (chargerStatus & 0x8000)
+    {
+        fprintf(stderr, "Charger connected.\r\n");
+    }
     else
     {
-        UINT16 chargerStatus = (buffer[1] << 8) | buffer[0];
-        if (chargerStatus & 0x8000)
-        {
-            fprintf(stderr, "Charger connected.\r\n");
-        }
-        else
-        {
-            fprintf(stderr, "Charger NOT connected.\r\n");
-        }
+        fprintf(stderr, "Charger NOT connected.\r\n");
     }
 
     // Success
