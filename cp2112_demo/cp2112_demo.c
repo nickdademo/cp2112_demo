@@ -73,7 +73,7 @@ enum sbsCommands {
 int main(int argc, char* argv[])
 {
     HID_SMBUS_DEVICE    m_hidSmbus;
-    BYTE                *buffer = (BYTE *)malloc(HID_SMBUS_MAX_READ_RESPONSE_SIZE); // Allocate on heap (not stack)
+    BYTE                buffer[HID_SMBUS_MAX_READ_RESPONSE_SIZE];
     BYTE                targetAddress[16];
 
     // Open device

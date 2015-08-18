@@ -1,5 +1,8 @@
 #include "smbus.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #define VID 0x10C4
 #define PID 0xEA90
 
@@ -107,7 +110,7 @@ INT SMBus_Configure(HID_SMBUS_DEVICE *device, DWORD bitRate, BYTE address, BOOL 
     return 0;
 }
 
-INT SMBus_Read(HID_SMBUS_DEVICE *device, BYTE *buffer, BYTE slaveAddress, WORD numBytesToRead, WORD targetAddressSize, BYTE *targetAddress)
+INT SMBus_Read(HID_SMBUS_DEVICE *device, BYTE *buffer, BYTE slaveAddress, WORD numBytesToRead, BYTE targetAddressSize, BYTE *targetAddress)
 {
     BOOL                opened;
     HID_SMBUS_STATUS    status;
@@ -117,6 +120,7 @@ INT SMBus_Read(HID_SMBUS_DEVICE *device, BYTE *buffer, BYTE slaveAddress, WORD n
     BYTE                totalNumBytesRead = 0;
     WORD                numRetries;
     WORD                bytesRead;
+    BYTE                _buffer[HID_SMBUS_MAX_READ_RESPONSE_SIZE];
 
     // Make sure that the device is opened
     if(HidSmbus_IsOpened(*device, &opened) == HID_SMBUS_SUCCESS && opened)
@@ -155,12 +159,13 @@ INT SMBus_Read(HID_SMBUS_DEVICE *device, BYTE *buffer, BYTE slaveAddress, WORD n
         // Wait for a read response
         do
         {
-            status = HidSmbus_GetReadResponse(*device, &status0, &buffer[totalNumBytesRead], HID_SMBUS_MAX_READ_RESPONSE_SIZE, &numBytesRead);
+            status = HidSmbus_GetReadResponse(*device, &status0, _buffer, HID_SMBUS_MAX_READ_RESPONSE_SIZE, &numBytesRead);
             // Check status
             if (status != HID_SMBUS_SUCCESS)
             {
                 return -1;
             }
+            memcpy(&buffer[totalNumBytesRead], _buffer, numBytesRead);
             totalNumBytesRead += numBytesRead;
         } while (totalNumBytesRead < numBytesToRead);
     }
@@ -173,7 +178,7 @@ INT SMBus_Read(HID_SMBUS_DEVICE *device, BYTE *buffer, BYTE slaveAddress, WORD n
     return totalNumBytesRead;
 }
 
-INT SMBus_Write(HID_SMBUS_DEVICE *device, BYTE *buffer, BYTE slaveAddress, WORD numBytesToWrite)
+INT SMBus_Write(HID_SMBUS_DEVICE *device, BYTE *buffer, BYTE slaveAddress, BYTE numBytesToWrite)
 {
     BOOL                opened;
     HID_SMBUS_STATUS    status;
