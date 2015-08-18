@@ -50,7 +50,7 @@ enum sbsCommands {
     MANUFACTURER_DATE,          // 0x1B
     SERIAL_NUMBER,              // 0x1C
     RESERVED1,                  // 0x1D
-    RESERVER2,                  // 0x1E
+    RESERVED2,                  // 0x1E
     RESERVED3,                  // 0x1F
     MANUFACTURER_NAME,          // 0x20
     DEVICE_NAME,                // 0x21
