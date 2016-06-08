@@ -80,26 +80,26 @@ int main(int argc, char* argv[])
     if(SMBus_Open(&m_hidSmbus) != 0)
     {
         fprintf(stderr,"ERROR: Could not open device.\r\n");
-        SMBus_Close(&m_hidSmbus);
+        SMBus_Close(m_hidSmbus);
         return -1;
     }
     fprintf(stderr,"Device successfully opened.\r\n");
 
     // Configure device
-    if(SMBus_Configure(&m_hidSmbus, BITRATE_HZ, ACK_ADDRESS, AUTO_RESPOND, WRITE_TIMEOUT_MS, READ_TIMEOUT_MS, SCL_LOW_TIMEOUT, TRANSFER_RETRIES, RESPONSE_TIMEOUT_MS) != 0)
+    if(SMBus_Configure(m_hidSmbus, BITRATE_HZ, ACK_ADDRESS, AUTO_RESPOND, WRITE_TIMEOUT_MS, READ_TIMEOUT_MS, SCL_LOW_TIMEOUT, TRANSFER_RETRIES, RESPONSE_TIMEOUT_MS) != 0)
     {
         fprintf(stderr,"ERROR: Could not configure device.\r\n");
-        SMBus_Close(&m_hidSmbus);
+        SMBus_Close(m_hidSmbus);
         return -1;
     }
     fprintf(stderr,"Device successfully configured.\r\n");
     
     // Voltage [0x09]
     targetAddress[0] = VOLTAGE;
-    if (SMBus_Read(&m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[VOLTAGE], 1, targetAddress) != sbsCommandResponseLength[VOLTAGE])
+    if (SMBus_Read(m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[VOLTAGE], 1, targetAddress) != sbsCommandResponseLength[VOLTAGE])
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
-        SMBus_Close(&m_hidSmbus);
+        SMBus_Close(m_hidSmbus);
         return -1;
     }
     UINT16 voltage_mV = (buffer[1] << 8) | buffer[0];
@@ -107,10 +107,10 @@ int main(int argc, char* argv[])
 
     // Current [0x0A]
     targetAddress[0] = CURRENT;
-    if (SMBus_Read(&m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[CURRENT], 1, targetAddress) != sbsCommandResponseLength[CURRENT])
+    if (SMBus_Read(m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[CURRENT], 1, targetAddress) != sbsCommandResponseLength[CURRENT])
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
-        SMBus_Close(&m_hidSmbus);
+        SMBus_Close(m_hidSmbus);
         return -1;
     }
     INT16 current_mA = (buffer[1] << 8) | buffer[0];
@@ -118,10 +118,10 @@ int main(int argc, char* argv[])
 
     // Relative State of Charge [0x0D]
     targetAddress[0] = RELATIVE_STATE_OF_CHARGE;
-    if (SMBus_Read(&m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[RELATIVE_STATE_OF_CHARGE], 1, targetAddress) != sbsCommandResponseLength[RELATIVE_STATE_OF_CHARGE])
+    if (SMBus_Read(m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[RELATIVE_STATE_OF_CHARGE], 1, targetAddress) != sbsCommandResponseLength[RELATIVE_STATE_OF_CHARGE])
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
-        SMBus_Close(&m_hidSmbus);
+        SMBus_Close(m_hidSmbus);
         return -1;
     }
     BYTE rsoc = buffer[0];
@@ -129,10 +129,10 @@ int main(int argc, char* argv[])
 
     // Remaining Capacity [0x0F]
     targetAddress[0] = REMAINING_CAPACITY;
-    if (SMBus_Read(&m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[REMAINING_CAPACITY], 1, targetAddress) != sbsCommandResponseLength[REMAINING_CAPACITY])
+    if (SMBus_Read(m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[REMAINING_CAPACITY], 1, targetAddress) != sbsCommandResponseLength[REMAINING_CAPACITY])
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
-        SMBus_Close(&m_hidSmbus);
+        SMBus_Close(m_hidSmbus);
         return -1;
     }
     UINT16 remCap = (buffer[1] << 8) | buffer[0];
@@ -140,10 +140,10 @@ int main(int argc, char* argv[])
 
     // Average Time to Empty [0x12]
     targetAddress[0] = AVERAGE_TIME_TO_EMPTY;
-    if (SMBus_Read(&m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[AVERAGE_TIME_TO_EMPTY], 1, targetAddress) != sbsCommandResponseLength[AVERAGE_TIME_TO_EMPTY])
+    if (SMBus_Read(m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[AVERAGE_TIME_TO_EMPTY], 1, targetAddress) != sbsCommandResponseLength[AVERAGE_TIME_TO_EMPTY])
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
-        SMBus_Close(&m_hidSmbus);
+        SMBus_Close(m_hidSmbus);
         return -1;
     }
     UINT16 avgTimeToEmpty = (buffer[1] << 8) | buffer[0];
@@ -151,10 +151,10 @@ int main(int argc, char* argv[])
 
     // Manufacturer Name [0x20]
     targetAddress[0] = MANUFACTURER_NAME;
-    if (SMBus_Read(&m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[MANUFACTURER_NAME], 1, targetAddress) < 1)
+    if (SMBus_Read(m_hidSmbus, buffer, BATTERY_SLAVE_ADDRESS_W, sbsCommandResponseLength[MANUFACTURER_NAME], 1, targetAddress) < 1)
     {
         fprintf(stderr,"ERROR: Could not perform SMBus read.\r\n");
-        SMBus_Close(&m_hidSmbus);
+        SMBus_Close(m_hidSmbus);
         return -1;
     }
     fprintf(stderr, "Manufacturer Name = ");
@@ -168,10 +168,10 @@ int main(int argc, char* argv[])
     // Check if charger is present
     // Charger Status [0x13]
     targetAddress[0] = 0x13;
-    if (SMBus_Read(&m_hidSmbus, buffer, CHARGER_SLAVE_ADDRESS_W, 2, 1, targetAddress) != 2)
+    if (SMBus_Read(m_hidSmbus, buffer, CHARGER_SLAVE_ADDRESS_W, 2, 1, targetAddress) != 2)
     {
         fprintf(stderr, "ERROR: Could not perform SMBus read.\r\n");
-        SMBus_Close(&m_hidSmbus);
+        SMBus_Close(m_hidSmbus);
         return -1;
     }
     UINT16 chargerStatus = (buffer[1] << 8) | buffer[0];
@@ -186,6 +186,6 @@ int main(int argc, char* argv[])
 
     // Success
     fprintf(stderr, "Done! Exiting...\r\n");
-    SMBus_Close(&m_hidSmbus);
+    SMBus_Close(m_hidSmbus);
     return 0;
 }
